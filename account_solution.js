@@ -77,13 +77,18 @@ const accounts = [
   var displayBalances = () => {
       // Implement display code here.
       let accountInfo=accounts.map(displayAccBalances)
+      console.table(accountInfo);
       return accountInfo;
   };
   var displayAccBalances=(accountInfo)=>{
     let name=accountInfo.name;
     let account=accountInfo.accountNo;
+    let obj=[]
     let balance=balances[accountInfo.accountNo];
-    console.log(name,account,balance);
+    obj={
+      name,account,balance
+    };
+    return obj;
   }
   
   // Do not change below this line.
