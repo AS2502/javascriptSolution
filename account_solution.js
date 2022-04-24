@@ -59,20 +59,15 @@ const accounts = [
   
   var updateBalancesWithTransactions = () => {
       // Implement transaction code here.
-      let balanceInfo=transactions.map(displayUpdatedBalances)
+      let balanceInfo=transactions.map(calculateBalances)
       return balanceInfo;
   };
-  var displayUpdatedBalances=(balanceInfo)=>{
+  var calculateBalances=(balanceInfo)=>{
     let type=balanceInfo.type;
     let accountNo=balanceInfo.accountNo;
     let amount=balanceInfo.amount;
     let balance=balances[balanceInfo.accountNo];
-    if(type==="withdrawal"){
-      balances[accountNo]=balance-amount;
-    }
-    else{
-      balances[accountNo]=balance+amount;
-    }
+    balances[accountNo]=(type==="withdrawal")?balance-amount:balance+amount;
   }
   var displayBalances = () => {
       // Implement display code here.
@@ -83,12 +78,12 @@ const accounts = [
   var displayAccBalances=(accountInfo)=>{
     let name=accountInfo.name;
     let account=accountInfo.accountNo;
-    let obj=[]
+    let accountDetailsArray=[]
     let balance=balances[accountInfo.accountNo];
-    obj={
+    accountDetailsArray=[
       name,account,balance
-    };
-    return obj;
+    ];
+    return accountDetailsArray;
   }
   
   // Do not change below this line.
