@@ -85,6 +85,11 @@ var rates = {
   
   var getSum = function () {
     lineItemPrice=purchases.map(getLineItemPrice)
+    let sum=0;
+    for(let i=0;i<lineItemPrice.length;i++){
+      sum=sum+lineItemPrice[i].price;
+    }
+    console.log("Total Sum : "+sum);
       console.table(lineItemPrice);
   };
   
