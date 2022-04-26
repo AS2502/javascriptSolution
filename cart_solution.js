@@ -48,19 +48,19 @@ var rates = {
   ];
   
   /* Functions */
-  var getDiscountPercent = function (productName) {
+  const getDiscountPercent = (productName) => {
     let discount=discounts[productName];
     let discountPercent=(discount>0)?(discount/100):0;
     return discountPercent;
   };
   
-  var getTaxPercent = function (productName) {
+  const getTaxPercent =  (productName) => {
     let tax=taxes[productName];
     let taxPercent=(tax>0)?(tax/100):0;
     return taxPercent;
   };
   
-  var getUnitPrice = function (itemName) {
+  const getUnitPrice = (itemName) => {
     let unitPrice=rates[itemName];
     let discountPercent=getDiscountPercent(itemName);
     let itemDiscountedPrice=unitPrice*discountPercent;
@@ -71,7 +71,7 @@ var rates = {
     return finalPrice;
   };
   
-  var getLineItemPrice = function (lineItem) {
+  const getLineItemPrice = (lineItem) => {
     let itemName=lineItem['item'];
     let unit=lineItem['units'];
     let unitPrice=getUnitPrice(itemName);
@@ -83,10 +83,11 @@ var rates = {
     return itemPrice;
   };
   
-  var getSum = function () {
+  const getSum = function () {
     lineItemPrice=purchases.map(getLineItemPrice)
     let sum=0;
-    for(let i=0;i<lineItemPrice.length;i++){
+    let itemLength=lineItemPrice.length;
+    for(let i=0;i<itemLength;i++){
       sum=sum+lineItemPrice[i].price;
     }
     console.log("Total Sum : "+sum);
@@ -95,7 +96,7 @@ var rates = {
   
   // Do not change below this line.
   /* Main Function */
-  var main = function main() {
+  const main = function main() {
     getSum();
   }
   main();

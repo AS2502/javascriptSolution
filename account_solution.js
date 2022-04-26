@@ -57,25 +57,24 @@ const accounts = [
     },
   ];
   
-  var updateBalancesWithTransactions = () => {
+  const updateBalancesWithTransactions = () => {
       // Implement transaction code here.
       let balanceInfo=transactions.map(calculateBalances)
       return balanceInfo;
   };
-  var calculateBalances=(balanceInfo)=>{
+  const calculateBalances=(balanceInfo)=>{
     let type=balanceInfo.type;
     let accountNo=balanceInfo.accountNo;
     let amount=balanceInfo.amount;
     let balance=balances[balanceInfo.accountNo];
     balances[accountNo]=(type==="withdrawal")?balance-amount:balance+amount;
   }
-  var displayBalances = () => {
+  const displayBalances = () => {
       // Implement display code here.
       let accountInfo=accounts.map(displayAccBalances)
       console.table(accountInfo);
-      return accountInfo;
-  };
-  var displayAccBalances=(accountInfo)=>{
+  }
+  const displayAccBalances=(accountInfo)=>{
     let name=accountInfo.name;
     let account=accountInfo.accountNo;
     let accountDetailsArray=[]
@@ -87,7 +86,7 @@ const accounts = [
   }
   
   // Do not change below this line.
-  var main = () => {
+  const main = () => {
       console.log('Balances before transactions');
       displayBalances();
       updateBalancesWithTransactions();
