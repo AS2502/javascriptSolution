@@ -75,19 +75,15 @@ const getTaxPercent = (productName) => {return (Taxes[productName]/100 || 0); };
 
 const getUnitPrice = (itemName) => {
   let unitPrice = UnitPrices[itemName];
-  let discountPercent = getDiscountPercent(itemName);
-  let itemDiscountedPrice = unitPrice * discountPercent;
+  let itemDiscountedPrice = unitPrice * getDiscountPercent(itemName);
   let discountedPrice = unitPrice - itemDiscountedPrice;
-  let taxPercent = getTaxPercent(itemName);
-  let taxPrice = discountedPrice * taxPercent;
+  let taxPrice = discountedPrice * getTaxPercent(itemName);
   let finalPrice = discountedPrice + taxPrice;
   return finalPrice;
 };
 const getSum = (eachBillsItem) => {
   let itemName = eachBillsItem['item'];
-  let unit = eachBillsItem['units'];
-  let unitPrice = getUnitPrice(itemName);
-  let totalUnitsPrice = unitPrice * unit;
+  let totalUnitsPrice = getUnitPrice(itemName) * eachBillsItem['units'];
   let billObj = {};
   let sum = 0;
   sum = sum + totalUnitsPrice;
@@ -101,14 +97,14 @@ const getBillsArray = (billsArray) => {
   let eachBillsItem = billsArray.map(getSum);
   let billsTotalAmount = (eachBillsItem.map(item => item.amount)).reduce((total, amount) => total + amount);
   payableAmount.push(billsTotalAmount);
+  // Print bill details
   console.table(eachBillsItem);
 }
 const billsItemArray = () => {
   let billsArray = Bills.map(getBillsArray);
 }
-const diffNumber = (arr1, arr2) => arr1.map(function (num, idx) {
-
-  let difference = num - arr2[idx];
+const diffNumber = (payableAmount, PaymentsMade) => payableAmount.map(function (num, idx) {
+  let difference = num - PaymentsMade[idx];
   let amountDifference = (difference >= 0) ? "Pending Amount " + difference : "Deposit Amount " + (difference * (-1));
   return amountDifference;
 });

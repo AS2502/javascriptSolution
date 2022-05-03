@@ -54,20 +54,16 @@ const getTaxPercent = (productName) => {return (taxes[productName]/100 || 0); };
 
 const getUnitPrice = (itemName) => {
   let unitPrice = rates[itemName];
-  let discountPercent = getDiscountPercent(itemName);
   let itemDiscountedPrice = unitPrice * getDiscountPercent(itemName);
   let discountedPrice = unitPrice - itemDiscountedPrice;
-  let taxPercent = getTaxPercent(itemName);
-  let taxPrice = discountedPrice * taxPercent;
+  let taxPrice = discountedPrice * getTaxPercent(itemName);
   let finalPrice = discountedPrice + taxPrice;
   return finalPrice;
 };
 
 const getLineItemPrice = (lineItem) => {
   let itemName = lineItem['item'];
-  let unit = lineItem['units'];
-  let unitPrice = getUnitPrice(itemName);
-  let totalUnitsPrice = unitPrice * unit;
+  let totalUnitsPrice = getUnitPrice(itemName) *  lineItem['units'];
   let itemPrice = {
     'price': totalUnitsPrice,
     'item': itemName,
@@ -77,8 +73,7 @@ const getLineItemPrice = (lineItem) => {
 
 const getSum = () => {
   let lineItemPrice = purchases.map(getLineItemPrice)
-  let sum = 0;
-  sum=(lineItemPrice.map(item=>item.price)).reduce((total,price)=>total+price);
+  const sum=(lineItemPrice.map(item=>item.price)).reduce((total,price)=>total+price);
   console.log("Total Sum : " + sum);
   console.table(lineItemPrice);
 };
