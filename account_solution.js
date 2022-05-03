@@ -63,27 +63,17 @@ const accounts = [
       return balanceInfo;
   };
   const calculateBalances=(balanceInfo)=>{
-    let type=balanceInfo.type;
     let accountNo=balanceInfo.accountNo;
     let amount=balanceInfo.amount;
-    let balance=balances[balanceInfo.accountNo];
-    balances[accountNo]=(type==="withdrawal")?balance-amount:balance+amount;
+    let balance=balances[accountNo];
+    balances[accountNo]=(balanceInfo.type==="withdrawal")?balance-amount:balance+amount;
   }
   const displayBalances = () => {
       // Implement display code here.
       let accountInfo=accounts.map(displayAccBalances)
       console.table(accountInfo);
   }
-  const displayAccBalances=(accountInfo)=>{
-    let name=accountInfo.name;
-    let account=accountInfo.accountNo;
-    let accountDetailsArray=[]
-    let balance=balances[accountInfo.accountNo];
-    accountDetailsArray=[
-      name,account,balance
-    ];
-    return accountDetailsArray;
-  }
+  const displayAccBalances=(accountInfo)=>{ return ([accountInfo.name,accountInfo.accountNo,balances[accountInfo.accountNo]]);}
   
   // Do not change below this line.
   const main = () => {

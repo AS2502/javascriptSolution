@@ -69,18 +69,10 @@ var PendingPayments = [
   // Compute the payments for every bill and add it here.
 
 ];
-var payableAmount=[];
-const getDiscountPercent = (productName) => {
-  let discount = Discounts[productName];
-  let discountPercent = (discount > 0) ? (discount / 100) : 0;
-  return discountPercent;
-};
+var payableAmount = [];
+const getDiscountPercent = (productName) => { return (Discounts[productName]/100 || 0); };
+const getTaxPercent = (productName) => {return (Taxes[productName]/100 || 0); };
 
-const getTaxPercent = (productName) => {
-  let tax = Taxes[productName];
-  let taxPercent = (tax > 0) ? (tax / 100) : 0;
-  return taxPercent;
-};
 const getUnitPrice = (itemName) => {
   let unitPrice = UnitPrices[itemName];
   let discountPercent = getDiscountPercent(itemName);
@@ -96,33 +88,38 @@ const getSum = (eachBillsItem) => {
   let unit = eachBillsItem['units'];
   let unitPrice = getUnitPrice(itemName);
   let totalUnitsPrice = unitPrice * unit;
-  let billObj={};
+  let billObj = {};
   let sum = 0;
   sum = sum + totalUnitsPrice;
-  billObj={
-    item:itemName,
-    amount:sum,
+  billObj = {
+    item: itemName,
+    amount: sum,
   }
   return billObj;
 }
 const getBillsArray = (billsArray) => {
   let eachBillsItem = billsArray.map(getSum);
-  let billsTotalAmount=(eachBillsItem.map(item=>item.amount)).reduce((total,amount)=>total+amount);
+  let billsTotalAmount = (eachBillsItem.map(item => item.amount)).reduce((total, amount) => total + amount);
   payableAmount.push(billsTotalAmount);
   console.table(eachBillsItem);
 }
 const billsItemArray = () => {
   let billsArray = Bills.map(getBillsArray);
 }
-const diffNumber = (arr1, arr2) => arr1.map(function (num, idx) { return num- arr2[idx] });
-const calculatePendingAmount=()=>{
-let PendingPayment=(diffNumber(payableAmount,PaymentsMade))
-let paymentBillsObj={
-  Advanced_Deposit: PaymentsMade,
-  Bill_Amount: payableAmount,
-  Pending_Amount:PendingPayment
-}
-console.table(paymentBillsObj);
+const diffNumber = (arr1, arr2) => arr1.map(function (num, idx) {
+
+  let difference = num - arr2[idx];
+  let amountDifference = (difference >= 0) ? "Pending Amount " + difference : "Deposit Amount " + (difference * (-1));
+  return amountDifference;
+});
+const calculatePendingAmount = () => {
+  let PendingPayment = (diffNumber(payableAmount, PaymentsMade))
+  let paymentBillsObj = {
+    Advanced_Deposit: PaymentsMade,
+    Bill_Amount: payableAmount,
+    Pending_Amount: PendingPayment
+  }
+  console.table(paymentBillsObj);
 }
 billsItemArray();
 calculatePendingAmount();

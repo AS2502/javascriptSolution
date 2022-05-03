@@ -48,22 +48,14 @@ var purchases = [
 ];
 
 /* Functions */
-const getDiscountPercent = (productName) => {
-  let discount = discounts[productName];
-  let discountPercent = (discount > 0) ? (discount / 100) : 0;
-  return discountPercent;
-};
+const getDiscountPercent = (productName) => { return (discounts[productName]/100 || 0); };
 
-const getTaxPercent = (productName) => {
-  let tax = taxes[productName];
-  let taxPercent = (tax > 0) ? (tax / 100) : 0;
-  return taxPercent;
-};
+const getTaxPercent = (productName) => {return (taxes[productName]/100 || 0); };
 
 const getUnitPrice = (itemName) => {
   let unitPrice = rates[itemName];
   let discountPercent = getDiscountPercent(itemName);
-  let itemDiscountedPrice = unitPrice * discountPercent;
+  let itemDiscountedPrice = unitPrice * getDiscountPercent(itemName);
   let discountedPrice = unitPrice - itemDiscountedPrice;
   let taxPercent = getTaxPercent(itemName);
   let taxPrice = discountedPrice * taxPercent;
