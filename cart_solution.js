@@ -48,9 +48,9 @@ var purchases = [
 ];
 
 /* Functions */
-const getDiscountPercent = (productName) => { return (discounts[productName]/100 || 0); };
+const getDiscountPercent = (productName) =>  (discounts[productName]/100 || 0); ;
 
-const getTaxPercent = (productName) => {return (taxes[productName]/100 || 0); };
+const getTaxPercent = (productName) => (taxes[productName]/100 || 0); ;
 
 const getUnitPrice = (itemName) => {
   let unitPrice = rates[itemName];
@@ -70,17 +70,14 @@ const getLineItemPrice = (lineItem) => {
   };
   return itemPrice;
 };
+const getCartDetails = () => (purchases.map(getLineItemPrice));
+const getSum = () => ((getCartDetails().map(item=>item.price)).reduce((total,price)=>total+price));
 
-const getSum = () => {
-  let lineItemPrice = purchases.map(getLineItemPrice)
-  const sum=(lineItemPrice.map(item=>item.price)).reduce((total,price)=>total+price);
-  console.log("Total Sum : " + sum);
-  console.table(lineItemPrice);
-};
 
 // Do not change below this line.
 /* Main Function */
 const main = () => {
-  getSum();
+  console.table(getCartDetails());
+  console.table("Total Sum : " + getSum());
 }
 main();

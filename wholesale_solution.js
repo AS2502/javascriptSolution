@@ -67,11 +67,10 @@ var PaymentsMade = [
 /* Programme */
 var PendingPayments = [
   // Compute the payments for every bill and add it here.
-
 ];
 var payableAmount = [];
-const getDiscountPercent = (productName) => { return (Discounts[productName]/100 || 0); };
-const getTaxPercent = (productName) => {return (Taxes[productName]/100 || 0); };
+const getDiscountPercent = (productName) => (Discounts[productName]/100 || 0); 
+const getTaxPercent = (productName) => (Taxes[productName]/100 || 0); 
 
 const getUnitPrice = (itemName) => {
   let unitPrice = UnitPrices[itemName];
@@ -98,24 +97,26 @@ const getBillsArray = (billsArray) => {
   let billsTotalAmount = (eachBillsItem.map(item => item.amount)).reduce((total, amount) => total + amount);
   payableAmount.push(billsTotalAmount);
   // Print bill details
-  console.table(eachBillsItem);
+  return eachBillsItem;
 }
-const billsItemArray = () => {
-  let billsArray = Bills.map(getBillsArray);
-}
+const billsItemArray = () => (Bills.map(getBillsArray));
+
 const diffNumber = (payableAmount, PaymentsMade) => payableAmount.map(function (num, idx) {
   let difference = num - PaymentsMade[idx];
   let amountDifference = (difference >= 0) ? "Pending Amount " + difference : "Deposit Amount " + (difference * (-1));
   return amountDifference;
 });
 const calculatePendingAmount = () => {
-  let PendingPayment = (diffNumber(payableAmount, PaymentsMade))
   let paymentBillsObj = {
     Advanced_Deposit: PaymentsMade,
     Bill_Amount: payableAmount,
-    Pending_Amount: PendingPayment
+    Pending_Amount: (diffNumber(payableAmount, PaymentsMade))
   }
-  console.table(paymentBillsObj);
+  return paymentBillsObj;
 }
-billsItemArray();
-calculatePendingAmount();
+const main = () => {
+//billsItemArray();
+billsItemArray().map((bill) => console.table(bill));
+console.table(calculatePendingAmount());
+}
+main();

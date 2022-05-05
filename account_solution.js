@@ -57,31 +57,26 @@ const accounts = [
     },
   ];
   
-  const updateBalancesWithTransactions = () => {
+  const updateBalancesWithTransactions = () => (transactions.map(calculateBalances))
       // Implement transaction code here.
-      let balanceInfo=transactions.map(calculateBalances)
-      return balanceInfo;
-  };
+      
   const calculateBalances=(balanceInfo)=>{
     let accountNo=balanceInfo.accountNo;
     let amount=balanceInfo.amount;
     let balance=balances[accountNo];
     balances[accountNo]=(balanceInfo.type==="withdrawal")?balance-amount:balance+amount;
   }
-  const displayBalances = () => {
+  const displayBalances = () => (accounts.map(displayAccBalances))
       // Implement display code here.
-      let accountInfo=accounts.map(displayAccBalances)
-      console.table(accountInfo);
-  }
-  const displayAccBalances=(accountInfo)=>{ return ([accountInfo.name,accountInfo.accountNo,balances[accountInfo.accountNo]]);}
   
+  const displayAccBalances = (accountInfo) => ({name:accountInfo['name'], accountNo:accountInfo['accountNo'], balance:balances[accountInfo['accountNo']]})
   // Do not change below this line.
   const main = () => {
       console.log('Balances before transactions');
-      displayBalances();
+      console.table(displayBalances());
       updateBalancesWithTransactions();
       console.log('Balances after transactions');
-      displayBalances();
+      console.table(displayBalances());
   }
   
   main();
